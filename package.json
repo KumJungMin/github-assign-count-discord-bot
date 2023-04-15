@@ -1,0 +1,15 @@
+{
+  "name": "github-assign-count-discord-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/KumJungMin/github-assign-count-discord-bot.git",
+  "author": "KumJungMin <rmawjdals@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/builders": "^1.6.1",
+    "discord.js": "^14.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0"
+  }
+}
