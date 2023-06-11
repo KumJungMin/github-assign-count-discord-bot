@@ -3,14 +3,14 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import fs from "fs";
+import "dotenv/config";
 
 import PRAssign from "./msg/pr-assign.js";
-import config from "./config.json.js";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
-const rest = new REST().setToken(config.token);
+const rest = new REST().setToken(process.env.token);
 
 // Grab all the command files from the commands directory you created earlier
 const __filename = fileURLToPath(import.meta.url);
@@ -52,7 +52,10 @@ async function getCommands() {
     );
     // The put method is used to fully refresh all commands in the guild with the current set
     const data = await rest.put(
-      Routes.applicationGuildCommands(config.clientId, config.guildId),
+      Routes.applicationGuildCommands(
+        process.env.clientId,
+        process.env.guildId
+      ),
       { body: result }
     );
 
@@ -75,10 +78,10 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 client.once("ready", async () => {
-  const channel = client.channels.cache.get(config.channelId);
+  const channel = client.channels.cache.get(process.env.channelId);
   if (channel) {
     const msg = await PRAssign.getMessage();
     channel.send(msg);
   }
 });
-client.login(config.token);
+client.login(process.env.token);
