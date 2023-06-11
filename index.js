@@ -1,9 +1,11 @@
 import { REST, Routes, Client, GatewayIntentBits } from "discord.js";
-import config from "./config.json.js";
-import fs from "fs";
-import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import path from "path";
+import fs from "fs";
+
+import PRAssign from "./msg/pr-assign.js";
+import config from "./config.json.js";
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
@@ -72,5 +74,11 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.reply("Pong!");
   }
 });
-
+client.once("ready", async () => {
+  const channel = client.channels.cache.get(config.channelId);
+  if (channel) {
+    const msg = await PRAssign.getMessage();
+    channel.send(msg);
+  }
+});
 client.login(config.token);
