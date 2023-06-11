@@ -10,7 +10,7 @@ import PRAssign from "./msg/pr-assign.js";
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
-const rest = new REST().setToken(process.env.token);
+const rest = new REST().setToken(process.env.TOKEN);
 
 // Grab all the command files from the commands directory you created earlier
 const __filename = fileURLToPath(import.meta.url);
@@ -53,8 +53,8 @@ async function getCommands() {
     // The put method is used to fully refresh all commands in the guild with the current set
     const data = await rest.put(
       Routes.applicationGuildCommands(
-        process.env.clientId,
-        process.env.guildId
+        process.env.CLIENTID,
+        process.env.GUILDID
       ),
       { body: result }
     );
@@ -78,10 +78,10 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 client.once("ready", async () => {
-  const channel = client.channels.cache.get(process.env.channelId);
+  const channel = client.channels.cache.get(process.env.CHANNELID);
   if (channel) {
     const msg = await PRAssign.getMessage();
     channel.send(msg);
   }
 });
-client.login(process.env.token);
+client.login(process.env.TOKEN);

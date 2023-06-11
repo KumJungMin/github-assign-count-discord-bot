@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/core";
 
-const octokit = new Octokit({ auth: process.env.auth_token });
+const octokit = new Octokit({ auth: process.env.AUTH_TOKEN });
 
 async function getMessage() {
   const repoNames = await _getRepoNames();
@@ -11,7 +11,7 @@ async function _getRepoNames() {
   // if your ora has more than 100 repos, you need to change this value
   const PER_PAGE = 100;
   const { data } = await octokit.request("GET /orgs/{org}/repos", {
-    org: process.env.org,
+    org: process.env.ORG,
     per_page: PER_PAGE,
   });
   return data.map((v) => v.name);
@@ -35,7 +35,7 @@ async function _getPRCountMap(repoNames) {
 }
 async function getRepoAsssigneers(repoName) {
   const { data } = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
-    owner: process.env.org,
+    owner: process.env.ORG,
     repo: repoName,
   });
   return data.map((v) => v?.requested_reviewers);
