@@ -2,8 +2,7 @@ name: run discord bot
 
 on:
   schedule:
-#   - cron: "0 9 * * *"
-    - cron: "20 8 * * *"
+    - cron: "0 0 * * *"  # utc time
 jobs:
   cron:
     runs-on: ubuntu-latest
