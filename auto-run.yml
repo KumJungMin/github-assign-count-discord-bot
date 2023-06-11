@@ -1,0 +1,40 @@
+name: run discord bot
+
+on:
+  schedule:
+    - cron: "0 9 * * *"
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+
+      - name: Install dependencies
+        run: yarn install --prefer-offline
+
+      - name: Generate Environment Variables File
+        run: |
+          echo "TOKEN=$TOKEN" >> .env
+          echo "CLIENTID=$CLIENTID" >> .env
+          echo "GUILDID=$GUILDID" >> .env
+          echo "CHANNELID=$CHANNELID" >> .env
+          echo "ORG=$ORG" >> .env
+          echo "AUTH_TOKEN=$AUTH_TOKEN" >> .env
+        env:
+          token: ${{ secrets.TOKEN }}
+          clientId: ${{ secrets.CLIENTID }}
+          guildId: ${{ secrets.GUILDID }}
+          channelId: ${{ secrets.CHANNELID }}
+          org: ${{ secrets.ORG }}
+          auth_token: ${{ secrets.AUTH_TOKEN }}
+
+      - name: Run bot
+        run: yarn serve
